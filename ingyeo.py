@@ -73,7 +73,7 @@ async def on_ready():
     print(bot.user.name) 
     print(bot.user.id)
     print('------')
-    await crawl()
+    await sleep_crawl()
     
 
 bot.run(config["bot_token"])
