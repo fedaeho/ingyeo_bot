@@ -35,11 +35,16 @@ async def channels(ctx, *args):
 
 
 @bot.command(name="수면기록")
-async def sleeplog(ctx, name=None):
+async def sleep_24h(ctx, name=None):
     if not name:
         name = ctx.author.name
-    await ctx.send(file=discord.File(sleeping.draw_sleep(name)))
+    await ctx.send(file=discord.File(sleeping.sleep_24h(name)))
     
+@bot.command(name="수면통계")
+async def sleep_stat(ctx, name=None):
+    if not name:
+        name = ctx.author.name
+    await ctx.send(file=discord.File(sleeping.sleep_stat(name)))
 
 @bot.command()
 async def sleep_crawl(limit: int=100):
