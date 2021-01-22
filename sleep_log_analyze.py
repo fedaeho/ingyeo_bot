@@ -161,12 +161,15 @@ def sleep_24h(author):
 #%%
 def sleep_stat(author):
     index, data_sleep = log_preprocess(author)
-    data_sleep["total_duration"] = data_sleep["duration"] + data_sleep["offset"].fillna(
-        0
-    )
-    data_sleep["day_number"][index] += 1
+    start_date = data_sleep["Date"].iloc[0]
 
     data_sleep["year_week"] = data_sleep["wake_dt"].map(lambda x: x.isocalendar()[:2])
+    data_sleep["total_duration"] = data_sleep["duration"] + data_sleep["offset"].fillna(0)
+    data_sleep["day_number"][index] += 1
+
+    data_sleep = data_sleep.groupby(["day_number", "holiday", "year_week"], as_index=False)['total_duration'].sum()
+    # print(data_sleep)
+
     data_sleep_week = data_sleep["total_duration"].groupby(data_sleep["year_week"])
 
     ds_week = data_sleep_week.aggregate("mean").reset_index()
@@ -196,7 +199,6 @@ def sleep_stat(author):
     TITLE_HEIGHT_ADJUST = 1.02
 
     figure.suptitle(title, fontsize=TITLE_FONT_SIZE)
-    start_date = data_sleep["Date"].iloc[0]
     # Create the tick labels
     # hour_labels = ["{}:00".format(h) for h in range(0,24)]
     day_labels = [
@@ -250,5 +252,3 @@ if __name__ == "__main__":
     # font_manager._rebuild()
 
     sleep_parser()
-    # sleep_24h("구국의철드럼")
-    sleep_stat("구국의철드럼")
