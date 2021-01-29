@@ -252,3 +252,4 @@ if __name__ == "__main__":
     # font_manager._rebuild()
 
     sleep_parser()
+    
